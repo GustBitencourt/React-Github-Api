@@ -5,13 +5,18 @@ const Profile = () => {
     return (
         <>
             <S.Wrapper>
-                <S.WrapperImage src="https://avatars.githubusercontent.com/u/79281317?v=4" alt="User Avatar" title="User Avatar" />
+                <S.WrapperImage 
+                    src="https://avatars.githubusercontent.com/u/79281317?v=4" 
+                    alt="User Avatar" 
+                    title="User Avatar" />
                 <S.WrapperInfoUser>
                     <div>
                         <h1>Gustavo Bitencourt</h1>
                         <S.WrapperUsername>
                             <h3>Username: </h3>
-                            <span>GustBitencourt</span>
+                            <a href="https://github.com/GustBitencourt" 
+                                target="_blank" 
+                                rel="noreferrer">Gustavo Bitencourt</a>
                         </S.WrapperUsername>
                     </div>
                     <S.WrapperStatusCount>
