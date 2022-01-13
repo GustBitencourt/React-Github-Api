@@ -10,6 +10,7 @@ export const GithubContext = createContext({
 
 /* Onde vai ficar todos os recursos e chamadas de api */
 const GithubProvider = ({ children }) => {
+    /* Default das informações */
     const [githubState, setGithubState] = useState({
         hasUser: false,
         loading: false,
@@ -31,6 +32,7 @@ const GithubProvider = ({ children }) => {
         starred: [],
     })
 
+    /* Pega usuario da api */
     const getUser = (username) => {
         setGithubState((prevState) => ({
             ...prevState,
@@ -69,21 +71,33 @@ const GithubProvider = ({ children }) => {
 
     }
 
-    const getUserRepos = () => {
-        api.get(`users/${githubState.user.login}/repos`)
+    /* Pega repositorios */
+    const getUserRepos = (username) => {
+        api.get(`users/${username}/repos`)
             .then(({ data }) => {
                 setGithubState((prevState) => ({
                     ...prevState,
-                    repositories: [data],
+                    repositories: data,
                 }));
             })
+    }
 
+    /* Pega starreds */
+    const getUserStarredRepos = (username) => {
+        api.get(`users/${username}/starred`)
+            .then(({ data }) => {
+                setGithubState((prevState) => ({
+                    ...prevState,
+                    starred: data,
+                }));
+            })
     }
 
     const contextValue = {
         githubState,
         getUser: useCallback((username) => getUser(username), []),
-        getUserRepos: useCallback(() => getUserRepos(), []),
+        getUserRepos: useCallback((username) => getUserRepos(username), []),
+        getUserStarredRepos: useCallback((username) => getUserStarredRepos(username), []),
     }
 
     return (

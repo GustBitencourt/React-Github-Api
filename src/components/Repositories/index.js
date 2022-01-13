@@ -4,18 +4,18 @@ import ItemRepository from '../ItemRepository';
 import * as S from './styled';
 
 const Repositories = () => {
-    const { githubState, getUserRepos } = useGithub();
+    const { githubState, getUserRepos, getUserStarredRepos } = useGithub();
     const [hasUserForSearchRepos, setHasUserForSearchRepos] = useState(false);
 
     useEffect(() => {
-        /* !! transforma login em booleano / se existir as tabs serão carregadas */
-        if(!!githubState.user.login) {
-            getUserRepos();
+        if(githubState.user.login) {
+            getUserRepos(githubState.user.login);
+            getUserStarredRepos(githubState.user.login);
         }
-        setHasUserForSearchRepos(!!githubState.repositories);
+        setHasUserForSearchRepos(githubState.repositories);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [githubState.user])
+    }, [githubState.user.login])
 
 
     return (
