@@ -1,5 +1,6 @@
 import React from 'react';
 import Layout from './components/Layout';
+import NoSearch from './components/NoSearch';
 import Profile from './components/Profile';
 import Repositories from './components/Repositories';
 import useGithub from './hooks/github-hooks';
@@ -10,7 +11,7 @@ const App = () => {
     <Layout>
       {/* Primeiro carregamento para aparecer pagina vazia */}
       {githubState.hasUser ? 
-      <>
+      (<>
       {/* Loading para requisição de novo usuario */}
       {githubState.loading ? (
         <h5>Loading</h5>
@@ -20,8 +21,8 @@ const App = () => {
         <Repositories />            
         </>
       )}
-      </> : 
-      <div>Nenhum usuário foi pesquisado ainda</div>
+      </>) : (
+      <NoSearch />)
       }
       
 
