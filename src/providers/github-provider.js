@@ -1,9 +1,9 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useCallback } from 'react';
+import api from '../services/api';
 
 export const GithubContext = createContext({
-    user: {
-
-    },
+    loading: false,
+    user: {},
     repositories: [],
     starred: [],
 });
@@ -11,6 +11,7 @@ export const GithubContext = createContext({
 /* Onde vai ficar todos os recursos e chamadas de api */
 const GithubProvider = ({ children }) => {
     const [githubState, setGithubState] = useState({
+        loading: false,
         user: {
             login: undefined,
             name: undefined,
@@ -27,8 +28,31 @@ const GithubProvider = ({ children }) => {
         starred: [],
     })
 
+    const getUser = (username) => {
+        api.get(`users/${username}`).then(({data: { user }}) => {
+            setGithubState(prevState => ({
+                ...prevState,
+                user: {
+                    login: user.login,
+                    name: user.name,
+                    html_url: user.html_url,
+                    blog: user.blog,
+                    company: user.company,
+                    location: user.location,
+                    followers: user.followers,
+                    followings: user.followings,
+                    public_gists: user.public_gists,
+                    public_repos: user.public_repos,
+                }
+            }))
+
+        })
+
+    }
+
     const contextValue = {
         githubState,
+        getUser: useCallback((username) => getUser(username), []),
     }
 
     return (
