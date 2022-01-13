@@ -11,8 +11,11 @@ export const GithubContext = createContext({
 /* Onde vai ficar todos os recursos e chamadas de api */
 const GithubProvider = ({ children }) => {
     const [githubState, setGithubState] = useState({
+        hasUser: false,
         loading: false,
         user: {
+            id: undefined,
+            avatar: undefined,
             login: undefined,
             name: undefined,
             html_url: undefined,
@@ -20,7 +23,7 @@ const GithubProvider = ({ children }) => {
             company: undefined,
             location: undefined,
             followers: 0,
-            followings: 0,
+            following: 0,
             public_gists: 0,
             public_repos: 0,
         },
@@ -29,23 +32,25 @@ const GithubProvider = ({ children }) => {
     })
 
     const getUser = (username) => {
-        api.get(`users/${username}`).then(({data: { user }}) => {
-            setGithubState(prevState => ({
+                            /* Desestruturando a informação que vem da api como data */
+        api.get(`users/${username}`).then(({ data }) => {
+            setGithubState((prevState) => ({
                 ...prevState,
                 user: {
-                    login: user.login,
-                    name: user.name,
-                    html_url: user.html_url,
-                    blog: user.blog,
-                    company: user.company,
-                    location: user.location,
-                    followers: user.followers,
-                    followings: user.followings,
-                    public_gists: user.public_gists,
-                    public_repos: user.public_repos,
+                    id: data.id,
+                    avatar: data.avatar_url,
+                    login: data.login,
+                    name: data.name,
+                    html_url: data.html_url,
+                    blog: data.blog,
+                    company: data.company,
+                    location: data.location,
+                    followers: data.followers,
+                    following: data.following,
+                    public_gists: data.public_gists,
+                    public_repos: data.public_repos,
                 }
             }))
-
         })
 
     }

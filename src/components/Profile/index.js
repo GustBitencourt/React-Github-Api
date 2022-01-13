@@ -3,26 +3,44 @@ import useGithub from '../../hooks/github-hooks';
 import * as S from './styled';
 
 const Profile = () => {
-
     const { githubState } = useGithub();
+
+
     return (
         <>
             <S.Wrapper>
                 <S.WrapperImage 
-                    src="https://avatars.githubusercontent.com/u/79281317?v=4" 
-                    alt="User Avatar" 
-                    title="User Avatar" />
+                    src= {githubState.user.avatar} 
+                    alt={`Image of ${githubState.user.name}`}
+                    title={githubState.user.name} />
                 <S.WrapperInfoUser>
                     <div>
                         <h1>{githubState.user.name}</h1>
-                        <S.WrapperUsername>
+                        <S.WrapperSmallInfos>
                             <h3>Username: </h3>
                             <a href={githubState.user.html_url} 
                                 target="_blank" 
                                 rel="noreferrer">
                                     {githubState.user.login}
                             </a>
-                        </S.WrapperUsername>
+                        </S.WrapperSmallInfos>
+                        <S.WrapperSmallInfos>
+                            <h3>Company:</h3>
+                            <span>{githubState.user.company}</span>
+                        </S.WrapperSmallInfos>
+                        <S.WrapperSmallInfos>
+                            <h3>Location:</h3>
+                            <span>{githubState.user.location}</span>
+                        </S.WrapperSmallInfos>
+                        <S.WrapperSmallInfos>
+                            <h3>Blog:</h3>
+                            <a href={githubState.user.blog} 
+                                target="_blank" 
+                                rel="noreferrer">
+                                    {githubState.user.blog}
+                            </a>
+                        </S.WrapperSmallInfos>
+
                     </div>
                     <S.WrapperStatusCount>
                         <div>
@@ -30,8 +48,8 @@ const Profile = () => {
                             <span>{githubState.user.followers}</span>
                         </div>
                         <div>
-                            <h4>Followings</h4>
-                            <span>{githubState.user.followings}</span>
+                            <h4>Following</h4>
+                            <span>{githubState.user.following}</span>
                         </div>
                         <div>
                             <h4>Gists</h4>
