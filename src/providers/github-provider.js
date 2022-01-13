@@ -32,26 +32,40 @@ const GithubProvider = ({ children }) => {
     })
 
     const getUser = (username) => {
-                            /* Desestruturando a informação que vem da api como data */
-        api.get(`users/${username}`).then(({ data }) => {
-            setGithubState((prevState) => ({
-                ...prevState,
-                user: {
-                    id: data.id,
-                    avatar: data.avatar_url,
-                    login: data.login,
-                    name: data.name,
-                    html_url: data.html_url,
-                    blog: data.blog,
-                    company: data.company,
-                    location: data.location,
-                    followers: data.followers,
-                    following: data.following,
-                    public_gists: data.public_gists,
-                    public_repos: data.public_repos,
-                }
-            }))
-        })
+        setGithubState((prevState) => ({
+            ...prevState,
+            /* Ao iniciar a requisição altera o loading o inverso de prevState.loading */
+            loading: !prevState.loading,
+        }))
+
+        api.get(`users/${username}`)
+            .then(({ data }) => {
+                setGithubState((prevState) => ({
+                    ...prevState,
+                    hasUser: true,
+                    user: {
+                        id: data.id,
+                        avatar: data.avatar_url,
+                        login: data.login,
+                        name: data.name,
+                        html_url: data.html_url,
+                        blog: data.blog,
+                        company: data.company,
+                        location: data.location,
+                        followers: data.followers,
+                        following: data.following,
+                        public_gists: data.public_gists,
+                        public_repos: data.public_repos,
+                    },
+                }));
+
+                /* Ao finalizar volta pra falso novamente */
+            }).finally(() => {
+                setGithubState((prevState) => ({
+                    ...prevState,
+                    loading: !prevState.loading,
+                }))
+            })
 
     }
 
